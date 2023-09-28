@@ -1,0 +1,86 @@
+﻿@*@model List<Product>*@
+<partial name="_Notification" />
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>LIST PRODUCT</h2>
+    </div>
+    <div class="col-md-6 text-right">
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-database-add"></i> Create New</a>
+    </div>
+</div>
+<div style="min-height:400px">
+    <table id="tblData" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="text-center">Name</th>
+
+                <th class="text-center">Price</th>
+                <th class="text-center">Category</th>
+                <th class="text-center">Image</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        
+    </table>
+</div>
+
+@section Scripts 
+{
+    <script>
+        var dataTable;
+        $(document).ready(function () {
+            loadDataToTable();
+        })
+        function loadDataToTable() {
+
+            dataTable = $('#tblData').DataTable({
+                ajax: {
+                    url: "././product/getALL"
+                },
+                columns: [
+                    { data: 'name' },
+                    { data: 'price' },
+                    { data: 'category.name' },
+                    {
+                        data: 'imageUrl', render: function (data) {
+                            return `
+                                    <img src="/images/products/${data}" alt="Alternate Text" style="width: 30px; height: 40px" />
+                            `
+                        }
+                    },
+                    {
+                        data: 'id', render: function (data) {
+                            return `
+                                 <a href="./Product/Edit/${data}" class="btn btn-success pr-2" style="width:100px"><i class="bi bi-pen"></i> Edit</a>
+                                 <a onclick=Delete("./Product/Delete/${data}") class="btn btn-danger" style="width:100px" onclick="return confirm('Bạn có muốn xóa không ?')"><i class="bi bi-trash3"></i> Delete</a>
+
+                            `
+                        }
+                    }
+                ]
+            });
+        }
+        function Delete(url) {
+            Swal.fire({
+                title: 'Are you sure to delete?',
+                showDenyButton: true,
+
+                confirmButtonText: 'Yes',
+                denyButtonText: `No`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        success: function (data) {
+                            dataTable.ajax.reload();
+                            toastr.success(data.message);
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+}

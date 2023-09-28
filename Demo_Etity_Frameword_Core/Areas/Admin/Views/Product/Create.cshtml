@@ -1,0 +1,56 @@
+﻿@model Product
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row mt-5">
+        <h2>Add Product</h2>
+    </div>
+    <hr />
+    <div class="form-group">
+        <label>Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Category</label>
+        <select asp-for="CategoryID" asp-items="@ViewBag.ListCategory" class="form-control">
+            <option disabled selected>---Select Categogy---</option>
+        </select>
+        <span asp-validation-for="CategoryID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>ImageUrl</label>
+        <input asp-for="ImageUrl" type="file" name="fUpload" value="" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary"> Save </button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts
+{
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

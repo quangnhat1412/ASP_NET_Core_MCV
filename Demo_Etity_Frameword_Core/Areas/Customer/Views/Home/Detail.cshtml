@@ -1,0 +1,63 @@
+﻿
+@model Tuple<Product, IEnumerable<Product>>
+<div class="row mt-3">
+    <div class="col-12">
+        <h2 class="text-center">Detail Product</h2>
+        <hr />
+    </div>
+    <!-- Sản phẩm được chọn-->
+    <div class="col-12">
+        <form class="row" asp-action="" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Item1.Id" />
+            <div class="col-3">
+                <img src="~/images/products/@Model.Item1.ImageUrl" alt="Alternate Text" style="height: 200px" />
+                <input type="hidden" asp-for="Item1.ImageUrl" />
+            </div>
+            <div class="col-9">
+                <h3 class="col-12 bg-primary-subtle">THÔNG TIN CHI TIẾT SẢN PHẨM</h3>
+                <div class="col-12 row">
+                    <label class="col-3">TÊN SẢN PHẨM</label>
+                    <p class="col-9">@Model.Item1.Name</p>
+                    <span asp-validation-for="Item1.Name" class="text-danger"></span>
+                </div>
+                <div class="col-12 row">
+                    <label class="col-3">GIÁ SẢN PHẨM</label>
+                    <p class="col-9" style="color: red;">@Model.Item1.Price</p>
+                    <span asp-validation-for="Item1.Price" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary"> <i class="bi bi-cart2"></i> ADD TO CART </button>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <!-- Sản phẩm cùng thể loại-->
+    <div class="col-12 bg-secondary-subtle mt-2"> <h4>SẢN PHẨM CÙNG LOẠI</h4> </div>
+    <div class="col-12 row">
+        <!-- Vòng lặp các sản phẩm liên quan-->
+        @foreach (var x in Model.Item2)
+        {
+            @if (x == null)
+            {
+                <div class="col-12"></div>
+            }
+            else
+            {
+                <form class="col-2">
+                    <div class="col-12 border p-3">@x.Name</div>
+                    <div class="col-12 border border-top-0">
+                        <img src="~/images/products/@x.ImageUrl" alt="Alternate Text" style="height: 150px" />
+                    </div>
+                </form>
+            }
+
+        }
+
+    </div>
+    <div class="col-12 bg-primary-subtle"> <h4>MÔ TẢ SẢN PHẨM</h4></div>
+    <div class="col-12 pb-5">
+        <textarea asp-for="Item1.Description" class="form-control" disabled></textarea>
+    </div>
+    <div class="clearfix">
+    </div>
+</div>

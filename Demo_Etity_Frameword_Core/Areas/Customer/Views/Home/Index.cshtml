@@ -1,0 +1,38 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row">
+    @foreach (var x in Model)
+    {
+        <div class="col-4 pt-4">
+            <div class="card" style="width: 100%;">
+                <div class="card-header">
+                    <img src="./images/products/@x.ImageUrl" class="card-img-top" style="width: 100%; height: 300px; object-fit: scale-down">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@x.Name</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-footer row">
+                    <div class="col-6 text-left">
+                        <p>Price: $@x.Price</p>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a asp-action="Detail" asp-route-id="@x.Id" class="btn btn-primary">Chi Tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--Hiển thị các liên kết chọn trang-->
+    <div class="text-center col-12 pt-3">
+            <label>Trang</label>
+            @for (int i = 1; i <= ViewBag.pagesum; i++)
+            {
+                <a asp-action="index" asp-route-page="@i" >@i</a>
+            }
+    </div>
+    <!--Ngăn footer đè lên-->
+    <div></div>
+</div>
